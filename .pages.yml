@@ -173,10 +173,9 @@ content:
         type: reference
         options:
           collection: authors
-          search: "name,bio"
+          search: "name"
           value: "{name}"
           label: "{name}"
-          image: "{avatar}"
 
       - name: depositMethods
         label: Deposit Methods
