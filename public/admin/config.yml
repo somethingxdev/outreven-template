@@ -5,7 +5,7 @@ backend:
   name: "github"
   repo: somethingxdev/outreven-template
   branch: main
-  base_url: https://outreven-template.vercel.app/
+  base_url: https://candid-kitten-24c196.netlify.app/
   automatic_deployments: true
 
 media_folder: "src/assets"
