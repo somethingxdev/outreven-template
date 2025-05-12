@@ -3,10 +3,10 @@ logo_url: /favicon.svg
 
 backend:
   name: "github"
-  repo: zankhq/astros
+  repo: somethingxdev/outreven-template
   branch: main
-  base_url: https://cms.majestico.workers.dev
-  automatic_deployments: false
+  base_url: https://outreven-template.vercel.app/
+  automatic_deployments: true
 
 media_folder: "src/assets"
 
