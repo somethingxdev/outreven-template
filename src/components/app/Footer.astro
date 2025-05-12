@@ -1,0 +1,99 @@
+---
+import { getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+const site = await getEntry('generals', 'info');
+
+const pokieLinks = [
+  { name: 'Cash Wizard Pokie', href: '#' },
+  { name: 'Dead or Alive Pokie', href: '#' },
+  { name: 'Cleopatra Pokie', href: '#' },
+  { name: 'Crown of Egypt Pokie', href: '#' },
+  { name: 'Bonanza Billion Pokie', href: '#' }
+];
+
+const pageLinks = [
+  { name: 'About Us', href: '/about' },
+  { name: 'Contacts', href: '/contacts' },
+  { name: 'Disclaimer', href: '/disclaimer' },
+  { name: 'How do we review', href: '/how-we-review' },
+  { name: 'Privacy Policy', href: '/privacy-policy' },
+  { name: 'Responsible Gambling', href: '/responsible-gambling' },
+  { name: 'Terms and Conditions', href: '/terms' }
+];
+
+const casinoLinks = [
+  { name: 'Pocket Pokies Casino', href: '#' },
+  { name: 'Richard Casino', href: '#' },
+  { name: 'Skycrown Casino', href: '#' }
+];
+---
+
+<footer class="bg-primary pt-12 pb-4">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-3 items-end gap-5 mb-8">
+      <div class="space-y-5">
+        {site?.data.siteLogo && <Image src={site.data.siteLogo} alt="Site Logo" class="max-w-[100px] object-contain" />}
+        <p class="text-gray-300 text-sm">
+          Welcome to the Casinologin.mobi website! Our experts check online casinos for Australians. You'll find reviews
+          of licensed clubs that have passed honesty and reliability checks here. Learn about the bonus system of the
+          top online casinos, a set of slot machines, and the pros/cons. Our experts will provide tips for beginners to
+          improve their chances of winning. You'll be able to find free slots to practice at Australia's top online
+          casino sites.
+        </p>
+        <p class="text-accent text-xs">Playing at online casinos can be addictive and costly.</p>
+      </div>
+
+      <!-- Best Pokies -->
+      <div class="md:mx-auto">
+        <h3 class="text-white font-bold text-lg mb-4">Best Pokies</h3>
+        <ul class="space-y-2">
+          {
+            pokieLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-gray-300 hover:text-white transition-colors">
+                  {link.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Technical pages -->
+      <div class="md:mx-auto">
+        <h3 class="text-white font-bold text-lg mb-4">Technical pages</h3>
+        <ul class="space-y-2">
+          {
+            pageLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-gray-300 hover:text-white transition-colors">
+                  {link.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <hr class="border-gray-700 mb-4" />
+
+    <!-- Bottom links and copyright -->
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="flex flex-wrap gap-4 mb-4 md:mb-0">
+        {
+          casinoLinks.map((link) => (
+            <a href={link.href} class="text-gray-300 hover:text-white transition-colors text-sm">
+              {link.name}
+            </a>
+          ))
+        }
+      </div>
+      <div class="flex items-center">
+        <span class="bg-red-500 text-white text-xs font-bold rounded-full size-8 flex items-center justify-center">
+          18+
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>

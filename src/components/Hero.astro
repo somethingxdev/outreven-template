@@ -1,0 +1,23 @@
+---
+import { getEntry } from 'astro:content';
+
+const site = await getEntry('generals', 'info');
+const heroSection = site?.data.heroSection;
+---
+
+<section id="hero" class="pb-20">
+  <div class="container">
+    <div class="max-w-3xl space-y-5 sm:space-y-8">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl tracking-tighter font-bold text-white">{heroSection?.title}</h1>
+      <p class="text-xl text-gray-300">{heroSection?.description}</p>
+      <div class="flex flex-col sm:flex-row items-center gap-2">
+        <a href="#" class="bg-accent border w-full sm:w-auto text-center border-transparent hover:bg-accent/90 transition-colors text-white px-5 py-3 font-medium rounded-full">
+          {heroSection?.primaryButtonText}
+        </a>
+        <a href="#" class="bg-transparent border w-full sm:w-auto text-center hover:bg-white hover:text-zinc-950 transition-colors text-white px-5 py-3 font-medium rounded-full">
+          {heroSection?.secondaryButtonText}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

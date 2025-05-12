@@ -1,0 +1,181 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '@/layouts/Layout.astro';
+import { Image } from 'astro:assets';
+export const getStaticPaths = (async () => {
+  const casinos = await getCollection('casinos');
+  return casinos.map((casino) => ({
+    params: { slug: casino.id },
+    props: { casino }
+  }));
+}) satisfies GetStaticPaths;
+
+const { casino } = Astro.props;
+const { data, body } = casino;
+
+const { Content } = await render(casino);
+
+const author = await getEntry('authors', data.author);
+
+// Format date for display
+const currentDate = new Date();
+const formattedDate = `${currentDate.toLocaleString('default', { month: 'short' })} ${currentDate.getDate()}, ${currentDate.getFullYear()}`;
+---
+
+<Layout>
+  <div class="container">
+    <div class="flex flex-col md:flex-row justify-between items-start mb-6 gap-5">
+      <div>
+        <h1 class="text-3xl md:text-5xl font-bold text-white mb-3 tracking-tight">
+          <span class="text-accent">{data.basic.name}</span> review
+        </h1>
+        <p class="text-white/80">{data.basic.description}</p>
+      </div>
+      <div class="flex flex-col md:items-end order-first md:order-last">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="md:text-right">
+            <p class="text-white text-sm">Written by:</p>
+            <p class="text-white font-bold">{author?.data.name}</p>
+          </div>
+          {
+            author?.data.avatar && (
+              <div class="size-12 rounded-full overflow-hidden">
+                <Image src={import(author.data.avatar)} alt={author.data.name} class="size-full object-cover" />
+              </div>
+            )
+          }
+        </div>
+        <p class="text-white/60 text-sm">Updated: {formattedDate}</p>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-2">
+        <div class="bg-placeholder rounded-lg p-5 mb-6">
+          <h2 class="text-2xl font-bold text-white mb-4">{data.secondary.title}</h2>
+          <p class="text-white/80" set:html={data.secondary.description} />
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <div class="bg-placeholder rounded-lg p-5 flex flex-col md:items-center justify-center">
+            <p class="text-xl md:text-3xl font-bold text-white">{data.financialInfo?.minimumDeposit}</p>
+            <p class="text-white/60">Min Dep</p>
+          </div>
+          <div class="bg-placeholder rounded-lg p-5 flex flex-col md:items-center justify-center">
+            <p class="text-xl md:text-3xl text-accent font-bold text-white">
+              {data.financialInfo?.minimumWithdrawal}
+            </p>
+            <p class="text-white/60">Min withdrawal</p>
+          </div>
+          <div class="bg-placeholder rounded-lg p-5 flex flex-col md:items-center justify-center">
+            <p class="text-xl md:text-text-3xl text-accent font-bold text-white">{data.financialInfo?.gameCount}</p>
+            <p class="text-white/60">Casino Games</p>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div class="bg-placeholder rounded-lg p-5">
+            <h3 class="text-xl font-bold text-white mb-4">Payment methods</h3>
+            <div class="grid grid-cols-2 gap-4">
+              {
+                data.depositMethods &&
+                  data.depositMethods.map((method: { name: string; code: string }) => (
+                    <div class="flex items-center gap-2 bg-body rounded p-2">
+                      <div class="size-8 flex items-center justify-center bg-white/10 rounded text-white text-sm">
+                        {method.code}
+                      </div>
+                      <span class="text-white">{method.name}</span>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+          <div class="bg-placeholder rounded-lg p-5">
+            <h3 class="text-xl font-bold text-white mb-4">Currencies accepted</h3>
+            <div class="grid gap-4">
+              {
+                data.withdrawalMethods &&
+                  data.withdrawalMethods.map((method: { name: string; code: string }) => (
+                    <div class="flex items-center gap-2 bg-body rounded p-2">
+                      <div class="size-8 flex items-center justify-center bg-white/10 rounded text-white text-sm">
+                        {method.code}
+                      </div>
+                      <span class="text-white">{method.name}</span>
+                    </div>
+                  ))
+              }
+            </div>
+          </div>
+        </div>
+        <div class="bg-placeholder rounded-lg p-5 mb-6">
+          <h3 class="text-xl font-bold text-white mb-4">Games</h3>
+          <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {
+              data.games &&
+                data.games.map((game: { name: string; icon: string; available: boolean }) => (
+                  <div class="flex items-center gap-2 bg-body rounded p-2">
+                    <div class="size-8 flex items-center justify-center bg-white/10 rounded text-white">
+                      <span class="text-lg">{game.icon}</span>
+                    </div>
+                    <span class="text-white">{game.name}</span>
+                    {game.available && <span class="ml-auto text-green-500">✓</span>}
+                  </div>
+                ))
+            }
+            <div class="flex items-center gap-2 bg-body rounded p-2">
+              <div class="size-8 flex items-center justify-center bg-white/10 rounded text-white">
+                <span class="text-lg">♠</span>
+              </div>
+              <span class="text-white">Blackjack</span>
+              <span class="ml-auto text-green-500">✓</span>
+            </div>
+            <div class="flex items-center gap-2 bg-body rounded p-2">
+              <div class="size-8 flex items-center justify-center bg-white/10 rounded text-white">
+                <span class="text-lg">🎲</span>
+              </div>
+              <span class="text-white">Video Poker</span>
+              <span class="ml-auto text-green-500">✓</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-placeholder rounded-lg p-5 mt-6">
+          <article class="prose prose-neutral prose-invert max-w-none">
+            <Content />
+          </article>
+        </div>
+      </div>
+      <div class="order-first lg:order-last">
+        <div class="bg-placeholder rounded-lg p-5 mb-5">
+          <h3 class="text-xl font-bold text-white mb-4">General Information</h3>
+          <div class="grid gap-3">
+            <div class="flex flex-col">
+              <span class="text-white/60 text-sm">Website:</span>
+              <span class="text-white">{data.basic?.website}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-white/60 text-sm">Established:</span>
+              <span class="text-white">{data.basic.established}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-white/60 text-sm">Owner:</span>
+              <span class="text-white">{data.basic.owner}</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-white/60 text-sm">License:</span>
+              <span class="text-white">{data.basic.license}</span>
+            </div>
+          </div>
+        </div>
+        <div class="bg-placeholder rounded-lg p-5 sticky top-25">
+          <h3 class="text-xl font-bold text-white text-center mb-2">Welcome Bonus:</h3>
+          <div class="text-accent text-2xl text-center font-bold mb-2">{data.basic.bonus}</div>
+          <a
+            href="#"
+            class="block uppercase w-full bg-accent text-lg text-white text-center py-3 rounded-lg font-medium hover:bg-accent/90 transition-colors"
+          >
+            Go to Casino
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

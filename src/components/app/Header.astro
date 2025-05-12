@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+const site = await getEntry('generals', 'info');
+---
+
+<header class="fixed top-0 left-0 w-full py-2 z-20 bg-placeholder">
+  <div class="container">
+    <div class="flex items-center justify-between gap-2">
+      <a href="/" class="text-accent">
+        {site?.data.siteLogo && <Image src={site.data.siteLogo} alt="Site Logo" class="max-w-[100px] object-contain" />}
+      </a>
+      <nav class="hidden md:block">
+        <ul class="flex items-center gap-5">
+          {
+            site?.data.menu.map((item: { label: string; link: string }) => (
+              <li class="text-white/90 hover:text-neutral-300 font-semibold text-lg ">
+                <a href={item.link}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div id="overlay" class="fixed inset-0 bg-black/70 z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+      <nav id="mobileMenu" class="fixed top-0 right-0 h-full w-64 bg-primary z-50 shadow-lg transform translate-x-full transition-transform duration-300 md:hidden flex flex-col p-8 pt-20 gap-6">
+        <button id="closeMenu" class="absolute top-4 right-4 text-white text-3xl font-bold">&times;</button>
+        <ul class="flex flex-col gap-5">
+          {
+            site?.data.menu.map((item: { label: string; link: string }) => (
+              <li class="text-white/90 hover:text-neutral-300 font-semibold text-xl">
+                <a href={item.link}>{item.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div class="flex items-center gap-3">
+        <a href="#" class="bg-accent text-white px-4 py-1 font-medium rounded"> Login</a>
+        <button id="burgerBtn" class="md:hidden flex flex-col gap-1.5 items-center justify-center" aria-label="Open menu">
+          <span class="w-7 h-1 bg-white rounded transition-all"></span>
+          <span class="w-7 h-1 bg-white rounded transition-all"></span>
+          <span class="w-7 h-1 bg-white rounded transition-all"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn') as HTMLElement;
+  const mobileMenu = document.getElementById('mobileMenu') as HTMLElement;
+  const closeMenu = document.getElementById('closeMenu') as HTMLElement;
+  const overlay = document.getElementById('overlay') as HTMLElement;
+
+  function openMobileMenu() {
+    mobileMenu.classList.remove('translate-x-full');
+    mobileMenu.classList.add('translate-x-0');
+    overlay.classList.remove('opacity-0');
+    overlay.classList.add('opacity-100');
+    overlay.classList.remove('pointer-events-none');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeMobileMenu() {
+    mobileMenu.classList.add('translate-x-full');
+    mobileMenu.classList.remove('translate-x-0');
+    overlay.classList.remove('opacity-100');
+    overlay.classList.add('opacity-0');
+    overlay.classList.add('pointer-events-none');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  burgerBtn.addEventListener('click', openMobileMenu);
+  closeMenu.addEventListener('click', closeMobileMenu);
+  overlay.addEventListener('click', closeMobileMenu);
+
+  document.addEventListener('click', (e) => {
+    if (!mobileMenu.contains(e.target as Node) && !burgerBtn.contains(e.target as Node) && !mobileMenu.classList.contains('translate-x-full')) {
+      closeMobileMenu();
+    }
+  });
+</script>

@@ -1,0 +1,15 @@
+{
+  "singleQuote": true,
+  "trailingComma": "none",
+  "printWidth": 120,
+  "tabWidth": 2,
+  "semi": true,
+  "overrides": [
+    {
+      "files": "*.{astro,css,js,jsx,md,mdx,svelte,ts,tsx,vue}",
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
+}

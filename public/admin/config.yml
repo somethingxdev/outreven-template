@@ -1,0 +1,210 @@
+local_backend: true
+logo_url: /favicon.svg
+
+backend:
+  name: "github"
+  repo: zankhq/astros
+  branch: main
+  base_url: https://cms.majestico.workers.dev
+  automatic_deployments: false
+
+media_folder: "src/assets"
+
+collections:
+  - name: "Authors"
+    label: "Authors"
+    folder: "src/data/authors"
+    media_folder: "src/assets/authors"
+    create: true
+    slug: "{{fields.name | slugify}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - {
+          label: "Avatar",
+          name: "avatar",
+          widget: "image",
+          media_folder: "src/assets/authors",
+        }
+      - { label: "Bio", name: "bio", widget: "text" }
+
+  - name: "Generals"
+    label: "Site Information"
+    editor:
+      preview: false
+    files:
+      - name: "site_info"
+        label: "Site Information"
+        file: "src/data/site/info.md"
+        fields:
+          # Logo
+          - {
+              label: "Site Logo",
+              name: "siteLogo",
+              widget: "image",
+              hint: "Site logo",
+            }
+
+          # SEO
+          - label: "SEO Settings"
+            name: "seo"
+            widget: "object"
+            fields:
+              - { label: "Site Title", name: "siteTitle", widget: "string" }
+              - {
+                  label: "Site Description",
+                  name: "siteDescription",
+                  widget: "text",
+                }
+              - {
+                  label: "Site Keywords",
+                  name: "siteKeywords",
+                  widget: "string",
+                }
+          # Menu
+          - label: "Menu"
+            name: "menu"
+            widget: "list"
+            allow_add: true
+            allow_delete: true
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Link", name: "link", widget: "string" }
+          # Hero Section
+          - label: "Hero Section"
+            name: "heroSection"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - {
+                  label: "Primary Button Text",
+                  name: "primaryButtonText",
+                  widget: "string",
+                }
+              - {
+                  label: "Secondary Button Text",
+                  name: "secondaryButtonText",
+                  widget: "string",
+                }
+
+          # Why Trust Section
+          - label: "Why Trust Section"
+            name: "whyTrustSection"
+            widget: "object"
+            fields:
+              - {
+                  label: "Section Title",
+                  name: "sectionTitle",
+                  widget: "string",
+                  default: "Why Trust Our Casino Reviews?",
+                }
+              - label: "Trust Cards"
+                name: "trustCards"
+                widget: "list"
+                allow_add: true
+                allow_delete: true
+                fields:
+                  - { label: "Card Title", name: "title", widget: "string" }
+                  - {
+                      label: "Card Description",
+                      name: "description",
+                      widget: "text",
+                    }
+                  - {
+                      label: "Card Icon SVG",
+                      name: "iconSvg",
+                      widget: "text",
+                      hint: "Paste the SVG code here",
+                    }
+
+  - name: "Casinos"
+    label: "Casinos"
+    folder: "src/data/casinos"
+    create: true
+    editor:
+      preview: false
+    slug: "{{fields.casinoName | slugify}}"
+    fields:
+      # Basic Information Group
+      - label: "Basic Information"
+        name: "basic"
+        widget: "object"
+        fields:
+          - { label: "Cover Image", name: "cover", widget: "image" }
+          - { label: "Casino Name", name: "name", widget: "string" }
+          - { label: "Casino Description", name: "description", widget: "text" }
+          - { label: "Established", name: "established", widget: "string" }
+          - { label: "Website", name: "website", widget: "string" }
+          - { label: "Owner", name: "owner", widget: "string" }
+          - { label: "License", name: "license", widget: "string" }
+          - { label: "Rating", name: "rating", widget: "number", max: 5, min: 1 }
+          - { label: "Bonus", name: "bonus", widget: "string" }
+      - label: "Secondary Section"
+        name: "secondary"
+        widget: "object"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+
+      # Financial Information Group
+      - label: "Financial Information"
+        name: "financialInfo"
+        widget: "object"
+        fields:
+          - {
+              label: "Minimum Deposit",
+              name: "minimumDeposit",
+              widget: "string",
+            }
+          - {
+              label: "Minimum Withdrawal",
+              name: "minimumWithdrawal",
+              widget: "string",
+            }
+          - { label: "Game Count", name: "gameCount", widget: "string" }
+
+      # Author Selection
+      - label: "Author"
+        name: "author"
+        widget: "relation"
+        collection: "Authors"
+        search_fields: ["name"]
+        value_field: "{{slug}}"
+        display_fields: ["name"]
+
+      # Payment Methods
+      - label: "Deposit Methods"
+        name: "depositMethods"
+        widget: "list"
+        allow_add: true
+        allow_delete: true
+        fields:
+          - { label: "Method Name", name: "name", widget: "string" }
+          - { label: "Method Code", name: "code", widget: "string" }
+
+      - label: "Withdrawal Methods"
+        name: "withdrawalMethods"
+        widget: "list"
+        allow_add: true
+        allow_delete: true
+        fields:
+          - { label: "Method Name", name: "name", widget: "string" }
+          - { label: "Method Code", name: "code", widget: "string" }
+      - label: "Games"
+        name: "games"
+        widget: "list"
+        allow_add: true
+        allow_delete: true
+        fields:
+          - { label: "Game Name", name: "name", widget: "string" }
+          - { label: "Game Icon", name: "icon", widget: "string" }
+          - {
+              label: "Available",
+              name: "available",
+              widget: "boolean",
+              default: true,
+            }
+            # Full Content
+      - { label: "Content", name: "body", widget: "markdown" }

@@ -1,11 +1,51 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from '@/layouts/Layout.astro';
+import Hero from '@/components/Hero.astro';
+import TopCasinos from '@/components/TopCasinos.astro';
+import AnalysisIcon from '@/icons/analysis.svg';
+import ReviewsIcon from '@/icons/reviews.svg';
+import UpdatesIcon from '@/icons/updates.svg';
+import LatestCasinoReviews from '@/components/LatestCasinoReviews.astro';
+const items = [
+  {
+    icon: AnalysisIcon,
+    title: 'Expert Analysis',
+    description:
+      'Our team of experienced reviewers thoroughly tests each casino for security, game variety, payment options, and customer support.'
+  },
+  {
+    icon: ReviewsIcon,
+    title: 'Unbiased Reviews',
+    description:  "We provide honest assessments of each casino's strengths and weaknesses, highlighting both positive and negative aspects."
+  },
+  {
+    icon: UpdatesIcon,
+    title: 'Regular Updates',
+    description:  'Our reviews are continuously updated to reflect the latest information, ensuring you have access to current details about each casino.'
+  }
+];
 ---
 
 <Layout>
-	<Welcome />
+  <Hero />
+  <TopCasinos />
+  <LatestCasinoReviews />
+  <div class="container">
+    <div class="bg-primary rounded-lg p-5">
+      <h2 class="text-3xl font-bold mb-6 text-white">Why Trust Our Casino Reviews?</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {
+          items.map((item, index) => (
+            <div class={`bg-placeholder p-5 rounded-lg ${index === 2 ? 'sm:col-span-2 lg:col-span-1' : ''}`}>
+              <div class="space-y-4">
+                <item.icon class="text-accent" width={32} height={32} />
+                <h3 class="text-xl font-bold mb-3 text-white">{item.title}</h3>
+                <p class="text-gray-300">{item.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
 </Layout>
