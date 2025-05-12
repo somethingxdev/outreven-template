@@ -41,7 +41,7 @@ const formattedDate = `${currentDate.toLocaleString('default', { month: 'short' 
           {
             author?.data.avatar && (
               <div class="size-12 rounded-full overflow-hidden">
-                <Image src={import(author.data.avatar)} alt={author.data.name} class="size-full object-cover" />
+                <Image src={author.data.avatar} alt={author.data.name} class="size-full object-cover" />
               </div>
             )
           }

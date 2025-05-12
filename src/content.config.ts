@@ -93,7 +93,13 @@ const generals = defineCollection({
 });
 
 const authors = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/data/authors' })
+  loader: glob({ pattern: '**/*.md', base: './src/data/authors' }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      avatar: image(),
+      bio: z.string()
+    })
 });
 
 export const collections = { casinos, generals, authors };
