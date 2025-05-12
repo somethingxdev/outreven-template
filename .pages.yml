@@ -170,8 +170,13 @@ content:
 
       - name: author
         label: Author
-        type: string
-        description: Author of the review (slug)
+        type: reference
+        options:
+          collection: authors
+          search: "name,bio"
+          value: "{name}"
+          label: "{name}"
+          image: "{avatar}"
 
       - name: depositMethods
         label: Deposit Methods
