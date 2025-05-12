@@ -5,8 +5,7 @@ backend:
   name: github
   repo: somethingxdev/outreven-template
   branch: main
-  identity_url: https://auth.decapbridge.com/sites/49b789b2-d782-4743-b8ad-1c990c39b77d
-  gateway_url: https://gateway.decapbridge.com
+  base_url: https://sveltia-cms-auth.hevnxv19.workers.dev/
 
   # Quickly see who did what (optional)
   commit_messages:
