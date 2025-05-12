@@ -2,11 +2,11 @@ local_backend: true
 logo_url: /favicon.svg
 
 backend:
-  name: "github"
+  name: git-gateway
   repo: somethingxdev/outreven-template
   branch: main
-  base_url: https://candid-kitten-24c196.netlify.app/
-  automatic_deployments: true
+  identity_url: https://auth.decapbridge.com/sites/49b789b2-d782-4743-b8ad-1c990c39b77d
+  gateway_url: https://gateway.decapbridge.com
 
 media_folder: "src/assets"
 
